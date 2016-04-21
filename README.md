@@ -5,6 +5,7 @@ TADP 1C 2016
 To Set up your enviorment just go to the links below and follow the instructions 
 
 Instalation:  http://tadp-utn-frba.github.io/guias/ruby/
+
 Language guide: https://docs.google.com/document/d/1h9nNG82xynkPSq0L-ZiJqvDDsFo3qH33kOKxi_T5tvI/pub
 
 #Execute
