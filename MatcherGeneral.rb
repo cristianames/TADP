@@ -8,4 +8,7 @@ class MatcherGeneral
   def not
     MatcherNot.new self
   end
+  def get_bindeos un_objeto
+    {}
+  end
 end

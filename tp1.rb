@@ -10,22 +10,22 @@ require_relative 'CombinatorOr'
 require_relative 'MatcherNot'
 
 class PatternWith
-  attr_accessor :matchers, :block, :estructura
+  attr_accessor :matchers, :block
   def initialize matchers, block
     self.matchers = matchers
     self.block = block
-    simbolos = matchers.select do | matcher |
-      type(Symbol).call matcher
-    end
-    if ( simbolos.size == 0)
-      self.estructura = Object.new
-    end else
-    self.estructura= Struct.new(*simbolos).new
   end
 
   def match un_objeto
-    if (CombinatorAnd.new matchers) .call un_objeto
-      return self.estructura.instance_eval &self.block
+
+    return false unless (CombinatorAnd.new matchers).call un_objeto
+    properties = { :a => 'dummy'}
+    self.matchers.each do |matcher|
+      #Cada matcher devolverá una lista de pares clave valor que seran simbolo => valor_bindeado
+      properties = properties.merge matcher.get_bindeos un_objeto
     end
+    return Struct.new(*properties.keys)
+               .new(*properties.values)
+               .instance_eval &self.block
   end
 end

@@ -114,21 +114,17 @@ describe 'PatternMatching' do
 
   end
 
-  # it 'with con un matcher de lista con match de valor bindea el objeto en el cuerpo' do
-  #
-  #   objeto = [1]
-  #   esperado = objeto[0] + 2;
-  #   matcher = with (list [:a]) { a + 2 }
-  #
-  #   resultado = matcher.match(objeto)
-  #   expect( resultado ).to eq esperado
-  #
-  # end
+  it 'with con un matcher de lista con match de valor bindea el objeto en el cuerpo' do
 
-  # it 'Puedo pasar parametros a bloques sin especificar que hay parametros' do
-  #
-  # end
-  #
+    objeto = [1]
+    esperado = objeto[0] + 2;
+    matcher = with (list [:a]) { a + 2 }
+
+    resultado = matcher.match(objeto)
+    expect( resultado ).to eq esperado
+
+  end
+
   # it 'Por patternmatching me da 3' do
   #
   #   x = [1, 2, 3]
