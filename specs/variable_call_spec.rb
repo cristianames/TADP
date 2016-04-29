@@ -1,5 +1,5 @@
 require 'rspec'
-require '../src/server/server.rb'
+require '../src/server/Server.rb'
 
 describe :variable_call do
 
