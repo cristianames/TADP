@@ -10,7 +10,8 @@ require_relative 'CombinatorOr'
 require_relative 'MatcherNot'
 require_relative 'PatternWith'
 require_relative 'MatcherCombinator'
+require_relative 'PatternOtherwise'
 
 def matches? (un_objeto, &patterns)
-  patterns.call un_objeto
+  PatternMatching.new un_objeto
 end

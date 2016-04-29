@@ -170,6 +170,43 @@ describe 'PatternMatching' do
 
   end
 
+  it 'with 1 interrumpe evaluacion de bloque' do
+
+    paso_por_with = false
+    paso_por_otherwise = false
+
+    def m1
+      yield
+    end
+
+    m1 { with(:x) { paso_por_with = true; }.match :asd;
+         otherwise { paso_por_otherwise = true; p 'otherwise' }.match :asd }
+
+    expect(paso_por_with).to eq true
+    expect(paso_por_otherwise).to eq false
+
+  end
+
+  it 'with 2 interrumpe evaluacion de bloque' do
+
+    paso_por_with1 = false
+    paso_por_with2 = false
+    paso_por_otherwise = false
+
+    def m1
+      yield
+    end
+
+    m1 { with(:x.not) { paso_por_with1 = true; }.match :asd;
+         with(:x) { paso_por_with2 = true; }.match :asd;
+         otherwise { paso_por_otherwise = true; p 'otherwise' }.match :asd }
+
+    expect(paso_por_with1).to eq false
+    expect(paso_por_with2).to eq true
+    expect(paso_por_otherwise).to eq false
+
+  end
+
   # it 'Por patternmatching me da 3' do
   #
   #   x = [1, 2, 3]
