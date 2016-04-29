@@ -1,4 +1,7 @@
-class MatcherDuckTyping < MatcherGeneral
+class MatcherDuckTyping
+
+  include MatcherGeneral
+
   attr_accessor :metodos
   def initialize metodos
     self.metodos =metodos

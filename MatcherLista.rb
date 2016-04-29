@@ -1,4 +1,6 @@
-class MatcherLista < MatcherGeneral
+class MatcherLista
+  include MatcherGeneral
+
   attr_accessor :values, :match_size
 
   def initialize values, match_size
@@ -8,21 +10,24 @@ class MatcherLista < MatcherGeneral
 
   def call una_lista
 
-    return false if !una_lista.kind_of? Array
-    return false if (match_size && values.size != una_lista.size)
-    return false if (self.values.size > una_lista.size)
+    (#p 'no es array';
+        return false) if !una_lista.kind_of? Array
+    (#p 'no coincide match_size';
+        return false) if (match_size && values.size != una_lista.size)
+    (#p 'la lista es muy chica';
+        return false) if (self.values.size > una_lista.size)
 
-    self.values.zip(una_lista).all? do |elem1, elem2|
+    todos_cumplen = self.values.zip(una_lista).all? do |matcher_o_valor, objeto|
       # [1, 2, 3, 4].zip [1, 2, 3, 4] => [ [1, 1], [1, 1], [1, 1], [1, 1] ]
-
-      if type(Symbol).call(elem1)
-        return true;
-      end
-
-      return val(elem1) .call elem2
+      return matcher_o_valor.call(objeto) if (matcher_o_valor.kind_of? MatcherGeneral)
+      return val(matcher_o_valor).call objeto
     end
 
+    p 'Todos cumplen? =>' + todos_cumplen
+    return todos_cumplen
+
   end
+
   def get_bindeos un_objeto
     bindeos = {}
 

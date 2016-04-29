@@ -1,4 +1,9 @@
+require_relative 'MatcherGeneral'
+
 class Symbol
+
+  include MatcherGeneral
+
   def call(un_valor)
     return true
   end
@@ -7,3 +12,4 @@ class Symbol
     { self => un_objeto }
   end
 end
+

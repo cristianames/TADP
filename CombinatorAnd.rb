@@ -1,10 +1,13 @@
-class CombinatorAnd < MatcherGeneral
-  attr_accessor :matchers
-  def initialize matchers
-    self.matchers=matchers
-  end
+require_relative 'MatcherCombinator'
+
+class CombinatorAnd < MatcherCombinator
 
   def call un_objeto
-    self.matchers.all? do |matcher| matcher.call un_objeto end
+    self.matchers.all? do |matcher|
+      resultado = matcher.call un_objeto
+      # p resultado.to_s + matcher.to_s
+      return resultado
+    end
   end
+
 end

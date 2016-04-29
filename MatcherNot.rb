@@ -1,4 +1,7 @@
-class MatcherNot < MatcherGeneral
+class MatcherNot
+
+  include MatcherGeneral
+
   attr_accessor :matcher_base
   def initialize matcher_base
     self.matcher_base= matcher_base

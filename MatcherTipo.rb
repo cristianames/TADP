@@ -1,4 +1,7 @@
-class MatcherTipo < MatcherGeneral
+class MatcherTipo
+
+  include MatcherGeneral
+
   attr_accessor :tipo
 
   def initialize(unTipo)

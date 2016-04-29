@@ -107,21 +107,66 @@ describe 'PatternMatching' do
 
   it 'with con un matcher de valor bindea el objeto en el cuerpo' do
 
-    matcher = with (:size) { size }
+    pattern = with (:size) { size }
 
-    resultado = matcher.match(5)
+    resultado = pattern.match(5)
     expect( resultado ).to eq 5
 
   end
 
   it 'with con un matcher de lista con match de valor bindea el objeto en el cuerpo' do
 
-    objeto = [1]
-    esperado = objeto[0] + 2;
-    matcher = with (list [:a]) { a + 2 }
+    pattern = with (list [:a]) { a + 2 }
 
-    resultado = matcher.match(objeto)
-    expect( resultado ).to eq esperado
+    resultado = pattern.match( [1] )
+    expect( resultado ).to eq 3
+
+  end
+
+  it 'test combinator hardcore 1' do
+
+    pattern = with(duck(:+).and(type(Fixnum), :x)) { x }
+
+    resultado = pattern.match 3
+    expect( resultado ).to eq 3
+
+  end
+
+  it 'test combinator hardcore 2' do
+
+    pattern = with(:y.or(val(4))) { y }
+
+    resultado = pattern.match 3
+    expect( resultado ).to eq 3
+
+  end
+
+  it 'test combinator hardcore 3' do
+
+    pattern = with(duck(:+).not) { 'aca no era nada' }
+
+    resultado = pattern.match Object.new
+    expect( resultado ).to eq 'aca no era nada'
+
+  end
+
+  it 'super test hardcore PatternWith' do
+
+    lista = [1,2,Object.new]
+    pattern = with(list([duck(:+).and(type(Fixnum), :x),
+                   :y.or(val(4)),duck(:+).not])) { x + y }
+
+    resultado = pattern.match lista
+    expect( resultado ).to eq 3
+
+  end
+
+  it 'otherwise ejecuta el bloque ante cualquier objeto' do
+
+    pattern = otherwise { 'no hace nada' }
+
+    resultado = pattern.match 'anything'
+    expect(resultado).to eq 'no hace nada'
 
   end
 

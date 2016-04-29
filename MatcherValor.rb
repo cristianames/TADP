@@ -1,4 +1,7 @@
-class MatcherValor < MatcherGeneral
+class MatcherValor
+
+  include MatcherGeneral
+
   attr_accessor :valor
 
   def initialize(valor)

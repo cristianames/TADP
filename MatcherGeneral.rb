@@ -1,4 +1,4 @@
-class MatcherGeneral
+module MatcherGeneral
   def and *matchers
     CombinatorAnd.new matchers.push self
   end

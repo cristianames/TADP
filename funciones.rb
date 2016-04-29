@@ -17,7 +17,7 @@ def with *matchers, &block
   PatternWith.new matchers, block
 end
 
-def matches? (un_objeto, &patterns)
-  patterns.call un_objeto
-
+def otherwise &bloque
+  PatternOtherwise.new bloque
 end
+
