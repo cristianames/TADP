@@ -9,7 +9,7 @@ Instalation:  http://tadp-utn-frba.github.io/guias/ruby/
 Language guide: https://docs.google.com/document/d/1h9nNG82xynkPSq0L-ZiJqvDDsFo3qH33kOKxi_T5tvI/pub
 
 #Execute
-To execute the program just open a terminal, load the file 'server.rb' and execute Init.start() command. After that,  you can use all the features that the program provides toyou.
+To execute the program just open a terminal and require the file 'pattern_matching.rb'. After that,  you can use all the features that the program provides to you.
 
 #IRB
 In order to run the program with irb, first make sure you already got irb installed on your computer, then just type irb to run the irb program
