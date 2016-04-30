@@ -1,6 +1,5 @@
-# require './ValueApplicator'
-
 class Applicable
+
   attr_accessor :applicable, :applicator
 
   def initialize(applicable, applicator)
@@ -9,6 +8,7 @@ class Applicable
   end
 
   def call(*args)
-     self.applicator.applicate(self.applicable, args)
+    self.applicator.applicate(self.applicable, args)
   end
+
 end

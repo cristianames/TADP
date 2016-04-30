@@ -1,13 +1,8 @@
-# require './src/server/Server.rb'
-
-require_relative 'matchers/Applicable'
-require_relative 'matchers/ValueApplicator'
-
-
 class Matcher
   def self.start
     variable_init
     value_init
+    type_init
   end
 
   def self.variable_init
@@ -20,7 +15,15 @@ class Matcher
   def self.value_init
     Object.send(:define_method, :val) do
       |value|
-      return Applicable.new(value, ValueApplicator.new)
+      Applicable.new(value, ValueApplicator.new)
     end
   end
+
+  def self.type_init
+    Object.send(:define_method, :type) do
+    |value|
+      Applicable.new(value, TypeApplicator.new)
+    end
+  end
+
 end
