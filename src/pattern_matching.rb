@@ -61,10 +61,11 @@ class TypePattern
 	attr_accessor :type
 
 	def call(a_value)
-		understood_messages = a_value.class.instance_methods
-		type.instance_methods.all? do |method|
-			understood_messages.include? method
-		end
+		# understood_messages = a_value.class.instance_methods
+		# type.instance_methods.all? do |method|
+		# 	understood_messages.include? method
+		# end
+		a_value.class.ancestors.include? self.type
 	end
 end
 
@@ -85,7 +86,11 @@ class ListPattern
 				same_size = self.list.length == a_list.length
 			end
 			same_size & self.list.zip(a_list).all? do |pattern, value|
-				pattern.call(value) do block.call end
+				if !block
+					pattern.call(value)
+				else
+					pattern.call(value, &block)
+				end
 			end
 		else
 			false
@@ -159,7 +164,7 @@ class NotPattern
 	attr_accessor :pattern
 
 	def call(a_value, &block)
-		!pattern.call(a_value) &block
+		!(pattern.call(a_value) &block)
 	end
 end
 
