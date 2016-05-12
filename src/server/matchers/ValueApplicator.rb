@@ -1,10 +1,11 @@
 class ValueApplicator
 
-  def applicate(value, comparationValues)
-    if comparationValues.length > 1
-      return false
+  def applicate(parameters, comparation_value)
+    value = parameters[0]
+    if value.class == Symbol
+      return value.call(comparation_value)
     end
-    return value == comparationValues[0]
+    value == comparation_value
   end
 
 end

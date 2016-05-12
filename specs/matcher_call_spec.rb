@@ -1,11 +1,7 @@
 require 'rspec'
-require '../src/server/Server.rb'
+require '../src/Server.rb'
 
 describe :variable_call do
-
-  before :all do
-    Init.start
-  end
 
   describe :with_no_arguments do
 

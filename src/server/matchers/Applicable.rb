@@ -1,14 +1,14 @@
 class Applicable
 
-  attr_accessor :applicable, :applicator
+  attr_accessor :parameters, :applicator
 
-  def initialize(applicable, applicator)
-    self.applicable = applicable
+  def initialize(applicator, *parameters)
     self.applicator = applicator
+    self.parameters = parameters
   end
 
-  def call(*args)
-    self.applicator.applicate(self.applicable, args)
+  def call(arg)
+    applicator.applicate(parameters, arg)
   end
 
 end

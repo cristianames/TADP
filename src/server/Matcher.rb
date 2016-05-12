@@ -3,6 +3,7 @@ class Matcher
     variable_init
     value_init
     type_init
+    list_init
   end
 
   def self.variable_init
@@ -13,16 +14,23 @@ class Matcher
   end
 
   def self.value_init
-    Object.send(:define_method, :val) do
+    Object.send :define_method, :val do
       |value|
-      Applicable.new(value, ValueApplicator.new)
+      Applicable.new ValueApplicator.new, value
     end
   end
 
   def self.type_init
-    Object.send(:define_method, :type) do
+    Object.send :define_method, :type do
     |value|
-      Applicable.new(value, TypeApplicator.new)
+      Applicable.new TypeApplicator.new, value
+    end
+  end
+
+  def self.list_init
+    Object.send :define_method, :list do
+      |value, match_size|
+      Applicable.new ListApplicator.new, value, match_size
     end
   end
 
