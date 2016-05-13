@@ -61,11 +61,7 @@ class TypePattern
 	attr_accessor :type
 
 	def call(a_value)
-		# understood_messages = a_value.class.instance_methods
-		# type.instance_methods.all? do |method|
-		# 	understood_messages.include? method
-		# end
-		a_value.class.ancestors.include? self.type
+		a_value.is_a? self.type
 	end
 end
 
@@ -171,6 +167,7 @@ end
 class PatternContext
 	attr_accessor :pattern_argument
 
+	# Metodo de contexto.
 	def define_variable(sym, a_value)
 		self.define_singleton_method(sym) do
 			a_value
@@ -178,13 +175,20 @@ class PatternContext
 	end
 end
 
+class WithContext
+
+end
+
+# Estoy en un PatternContext
 def with(*patterns, &block)
-	value = pattern_argument
+	# Ahora creo un PatternContext propio para el with
+	contexto_with = PatternContext.new
+	contexto_with.pattern_argument =pattern_argument
 	all = patterns.all? do |pattern|
-		pattern.call value do self end
+		pattern.call pattern_argument do contexto_with end
 	end
 	if all
-		raise MatchException.new(self.instance_eval &block)
+		raise MatchException.new(contexto_with.instance_eval &block)
 	end
 end
 
@@ -203,8 +207,8 @@ def matches?(a_value, &block)
 	end
 end
 
-p (matches?([1, 2, 3]) do
- with(list([:a, val(2), duck(:+).and(:x)])) { a + x }
- with(list([1, 2, 3])) { 'acá no llego' }
- otherwise { 'acá no llego' }
-end)
+# p (matches?([1, 2, 3]) do
+#  with(list([:a, val(2), duck(:+).and(:x)])) { a + x }
+#  with(list([1, 2, 3])) { 'acá no llego' }
+#  otherwise { 'acá no llego' }
+# end)
