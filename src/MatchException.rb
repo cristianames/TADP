@@ -5,3 +5,6 @@ class MatchException < RuntimeError
     self.answer = answer
   end
 end
+
+class NoMatchError < RuntimeError
+end

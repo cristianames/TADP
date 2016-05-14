@@ -1,6 +1,7 @@
 require 'rspec'
-require '../src/pattern_matching.rb'
+require '../src/PatternMatching.rb'
 
+include PatternMatching
 
 class Dragon
   def fly
@@ -28,6 +29,9 @@ describe :duck_typing do
     end
     it 'should be false if not contains all methods' do
       expect(duck(:cuack, :fly).call(@a_dragon)).to eq false
+    end
+    it 'should be true if contains one method' do
+      expect(duck(:cuack).call(@psyduck)).to eq true
     end
 
   end

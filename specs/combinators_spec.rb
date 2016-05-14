@@ -1,7 +1,8 @@
 require 'rspec'
-require '../src/pattern_matching.rb'
+require '../src/PatternMatching.rb'
 require '../lib/age.rb'
 
+include PatternMatching
 
 class Dragon
   def fly
@@ -46,8 +47,17 @@ describe :combinators do
     it 'should be false if asserts' do
       expect(type(Defensor).not.call(@una_muralla)).to eq false
     end
+
+    it 'should be true if asserts' do
+      expect(type(Defensor).call(@una_muralla)).to eq true
+    end
+
     it 'should be true if not asserts' do
       expect(type(Defensor).not.call(@un_misil)).to eq true
+    end
+
+    it 'should be false if asserts' do
+      expect(type(Defensor).call(@un_misil)).to eq false
     end
 
   end

@@ -36,7 +36,7 @@ module PatternMatching
 		end
 
 		def is_pattern(pattern)
-			duck(:call).call(pattern)
+			duck(:call, :and, :or, :not).call(pattern)
 		end
 
 		def list(a_list, match_size=true)
@@ -60,11 +60,11 @@ module PatternMatching
 			pattern
 		end
 
-	# Estoy en un PatternContext
+		# Estoy en un PatternContext
 		def with(*patterns, &block)
 			# Ahora creo un PatternContext propio para el with
 			contexto_with = PatternContext.new
-			contexto_with.pattern_argument =pattern_argument
+			contexto_with.pattern_argument = pattern_argument
 			all = patterns.all? do |pattern|
 				pattern.call pattern_argument do contexto_with end
 			end
@@ -74,8 +74,7 @@ module PatternMatching
 		end
 
 		def otherwise(&block)
-			block.call
-			raise MatchException.new(nil)
+			raise MatchException.new(block.call)
 		end
 
 		def matches?(a_value, &block)
@@ -83,14 +82,9 @@ module PatternMatching
 				context = PatternContext.new
 				context.pattern_argument = a_value
 				context.instance_eval &block
+				raise NoMatchError.new
 			rescue MatchException => e
 				e.answer
 			end
 		end
-
-	# p (matches?([1, 2, 3]) do
-	#  with(list([:a, val(2), duck(:+).and(:x)])) { a + x }
-	#  with(list([1, 2, 3])) { 'acá no llego' }
-	#  otherwise { 'acá no llego' }
-	# end)
 end
