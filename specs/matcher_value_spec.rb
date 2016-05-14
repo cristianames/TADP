@@ -1,5 +1,7 @@
 require 'rspec'
-require '../src/pattern_matching.rb'
+require '../src/PatternMatching.rb'
+
+include PatternMatching
 
 describe :value_matcher do
 
