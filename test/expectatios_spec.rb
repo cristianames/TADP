@@ -1,6 +1,10 @@
 require 'rspec'
-require_relative '../src/pattern_matching'
+require_relative '../src/PatternMatching'
 require_relative '../lib/age'
+
+class Object
+  include PatternMatching
+end
 
 describe 'PatternMatching' do
 
