@@ -1,6 +1,6 @@
 require 'rspec'
-require_relative 'src/pattern_matching'
-require_relative 'lib/age'
+require_relative '../src/pattern_matching'
+require_relative '../lib/age'
 
 describe 'PatternMatching' do
 
@@ -93,9 +93,10 @@ describe 'PatternMatching' do
 
     una_muralla = Muralla.new
     un_misil = Misil.new
-    expect( (type Defensor).not.call(una_muralla)).to eq false
+    expect( (type Defensor).call(una_muralla)).to eq true
+    #expect( (type Defensor).not.call(una_muralla)).to eq false
     expect( (type Defensor).call(un_misil)).to eq false
-    expect( (type Defensor).not.call(un_misil) { 1 }).to eq true
+    expect( (type Defensor).not.call(un_misil)).to eq true
 
   end
 
