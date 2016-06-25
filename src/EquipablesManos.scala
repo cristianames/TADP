@@ -16,14 +16,14 @@ trait EquipableDosManos extends Equipable {
 
 }
 
-case object ArcoViejo extends EquipableDosManos {
+object arcoViejo extends EquipableDosManos {
   posicion = DosManos
   def modificarStats(stats: Stats, heroe: Personaje): Stats = {
     stats.copy(stats.hp, stats.fuerza + 2, stats.inteligencia, stats.velocidad)
   }
 }
 
-case object EscudoAntiRobo extends EquipableUnaMano {
+object escudoAntiRobo extends EquipableUnaMano {
   posicion = ManoIzquierda
   
   override def puedeUsarlo(heroe: Personaje): Boolean = {
@@ -38,7 +38,7 @@ case object EscudoAntiRobo extends EquipableUnaMano {
   }
 }
 
-case object PalitoMagico extends EquipableUnaMano {
+object palitoMagico extends EquipableUnaMano {
   posicion = ManoDerecha
   
   override def puedeUsarlo(heroe: Personaje): Boolean = {

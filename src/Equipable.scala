@@ -21,7 +21,7 @@ trait Equipable extends Modificador {
 
 }
 
-case object CascoVikingo extends Equipable {
+object cascoVikingo extends Equipable {
   posicion = Cabeza;
 
   override def puedeUsarlo(heroe: Personaje): Boolean = {
@@ -34,7 +34,7 @@ case object CascoVikingo extends Equipable {
 
 }
 
-case object VinchaBufaloAgua extends Equipable {
+object vinchaBufaloAgua extends Equipable {
   posicion = Cabeza
   override def puedeUsarlo(heroe: Personaje): Boolean = {
     heroe.trabajo == Ninguno
@@ -49,7 +49,7 @@ case object VinchaBufaloAgua extends Equipable {
   }
 }
 
-case object TalismanDeDedicacion extends Equipable {
+object TalismanDeDedicacion extends Equipable {
   def modificarStats(stats: Stats, heroe: Personaje): Stats = {
     val dedicacion = heroe.trabajo.calcularStatPrincipal(heroe) / 10
     stats.copy(stats.hp + dedicacion,

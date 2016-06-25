@@ -26,6 +26,10 @@ class Personaje(val trabajo: Trabajo, val stats: Stats, val items: List[Equipabl
   def statPrincipal() = {
     trabajo.calcularStatPrincipal(this)
   }
+  
+  def setTrabajo(trabajo: Trabajo) = {
+    new Personaje(trabajo, stats, items)
+  }
 
   def setFuerza(fuerza: Int) = {
     new Personaje(trabajo, stats.copy(stats.hp, fuerza, stats.inteligencia, stats.velocidad), items)
