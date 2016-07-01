@@ -1,3 +1,22 @@
+import scala.util.Try
+
+// Semi-monada que maneja los resultados de realizar tareas y misiones
+// Cuando se falla de realizar una mision, contiene la tarea que no se pudo realizar
+trait ResultadoMision {
+  def map(f: Equipo => Equipo): ResultadoMision
+  def flatMap(f: Equipo => ResultadoMision): ResultadoMision
+}
+
+case class Victorioso(val equipo: Equipo) extends ResultadoMision {
+  def map(f: Equipo => Equipo) = this.copy(f(equipo))
+  def flatMap(f: Equipo => ResultadoMision) = f(equipo)
+}
+
+case class Derrotado(val equipo: Equipo, val tareaNoCumplida: Tarea) extends ResultadoMision {
+  def map(f: Equipo => Equipo) = this
+  def flatMap(f: Equipo => ResultadoMision) = this
+}
+
 class Equipo(val miembros: List[Personaje], val pozo: Double, val nombre: String) {
 
   def getLider(): Option[Personaje] = {
@@ -12,46 +31,35 @@ class Equipo(val miembros: List[Personaje], val pozo: Double, val nombre: String
     }
   }
 
-  def mejorHeroeSegun(criterio: Personaje => Int): Option[Personaje] = {
-    if (miembros.isEmpty) {
-      return None
-    }
-    Some(miembros.maxBy(criterio(_)))
+  def mejorHeroeSegun(criterio: Personaje => Int): Try[Personaje] = {
+    Try(miembros.maxBy(criterio(_)))
   }
 
-  def realizarMision(mision: Mision): Option[Equipo] = {
-    mision.tareas.foldRight[Option[Equipo]](Some(this)){
-      (tarea, equipo) => equipo.flatMap { e =>
-        val heroeApto = e.miembros.maxBy { tarea.facilidadPara(_, e) }
-        if (tarea.facilidadPara(heroeApto, e) <= 0) {
-          None
-        } else {
-          Some(tarea.realizadaPor(heroeApto, e))
+  def realizarMision(mision: Mision): ResultadoMision = {
+    mision.tareas.foldRight[ResultadoMision](Victorioso(this)) {
+      (tarea, equipo) =>
+        equipo.flatMap { e =>
+          val heroeApto = e.miembros.maxBy { tarea.facilidadPara(_, e) }
+          tarea.realizadaPor(heroeApto, e)
         }
-      }
     }.map { mision.recompensarEquipo(_) }
   }
 
-  def elegirMision(taberna: Taberna, criterio: (Equipo, Equipo) => Boolean): Option[Mision] = {
-    if (taberna.misiones.isEmpty) {
-      return None
-    }
-    Some(taberna.misiones.sortWith { (mision1, mision2) =>
+  def elegirMision(taberna: Taberna, criterio: (Equipo, Equipo) => Boolean): Try[Mision] = {
+    Try(taberna.misiones.sortWith { (mision1, mision2) =>
       val equipo1 = realizarMision(mision1)
       val equipo2 = realizarMision(mision2)
-      equipo1 match {
-        case None => false
-        case Some(e1) => equipo2 match {
-          case None     => true
-          case Some(e2) => criterio(e1, e2)
-        }
+      (equipo1, equipo2) match {
+        case (Derrotado(_, _), _)             => false
+        case (_, Derrotado(_, _))             => true
+        case (Victorioso(e1), Victorioso(e2)) => criterio(e1, e2)
       }
 
     }.head)
   }
 
-  def entrenar(taberna: Taberna): Option[Equipo] = {
-    taberna.misiones.foldRight[Option[Equipo]](Some(this)) { (mision, equipo) =>
+  def entrenar(taberna: Taberna): ResultadoMision = {
+    taberna.misiones.foldRight[ResultadoMision](Victorioso(this)) { (mision, equipo) =>
       equipo.flatMap(_.realizarMision(mision))
     }
   }

@@ -20,13 +20,20 @@ object misionPoco extends Mision {
 trait Tarea {
   
   def facilidadPara(heroe: Personaje, equipo: Equipo): Int
-  def realizadaPor(heroe: Personaje, equipo: Equipo): Equipo
+  def premioPorRealizacion(heroe: Personaje, equipo: Equipo): Equipo
+  def realizadaPor(heroe: Personaje, equipo: Equipo): ResultadoMision = {
+    if (this.facilidadPara(heroe, equipo) < 0) {
+      Derrotado(equipo, this)
+    } else {
+      Victorioso(premioPorRealizacion(heroe, equipo))
+    }
+  }
 
 }
 
 trait TareaPremioSubirFuerza extends Tarea {
   
-  def realizadaPor(heroe: Personaje, equipo: Equipo): Equipo = {
+  def premioPorRealizacion(heroe: Personaje, equipo: Equipo): Equipo = {
     val heroeNuevo = heroe.setFuerza(heroe.fuerzaBase() + 10)
     equipo.reemplazarMiembro(heroeNuevo, heroe)
   }
@@ -40,7 +47,7 @@ trait TareaPremioGanarOro extends Tarea {
     this.oro = oro
   }
   
-  def realizadaPor(heroe: Personaje, equipo: Equipo): Equipo = {
+  def premioPorRealizacion(heroe: Personaje, equipo: Equipo): Equipo = {
     new Equipo(equipo.miembros, equipo.pozo + oro, equipo.nombre)
   }
 }
